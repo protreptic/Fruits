@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fruits</string>
+    <string name="fruit_service">https://serene-savannah-28976.herokuapp.com/</string>
+    <string name="message1001">Ошибка загрузки</string>
+    <string name="add_fruit">Добавить фрукт</string>
+    <string name="remove_fruit">Удалить фрукт</string>
+    <string name="message1002">Фрукт удален</string>
+</resources>
