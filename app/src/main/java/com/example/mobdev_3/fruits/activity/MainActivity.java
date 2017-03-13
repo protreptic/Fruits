@@ -25,10 +25,4 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Snackbar.make(findViewById(R.id.activity_main), "", Snackbar.LENGTH_SHORT).show();
-    }
 }

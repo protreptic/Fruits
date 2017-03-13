@@ -7,4 +7,6 @@
 
     <string name="message1001">Ошибка загрузки</string>
     <string name="message1002">Фрукт удален</string>
+    <string name="you">Вы</string>
+    <string name="settings">Settings</string>
 </resources>
