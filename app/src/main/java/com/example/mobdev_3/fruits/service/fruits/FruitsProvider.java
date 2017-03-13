@@ -3,6 +3,8 @@ package com.example.mobdev_3.fruits.service.fruits;
 import android.content.Context;
 
 import com.example.mobdev_3.fruits.R;
+import com.example.mobdev_3.fruits.service.fruits.interceptor.GzipInterceptor;
+import com.example.mobdev_3.fruits.service.fruits.interceptor.RequestInterceptor;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -19,6 +21,9 @@ public final class FruitsProvider {
         sFruits = new Retrofit.Builder()
                 .baseUrl(context.getString(R.string.fruit_service))
                 .client(new OkHttpClient.Builder()
+                        //.authenticator(new FruitAuthenticator())
+                        .addInterceptor(new RequestInterceptor(1))
+                        .addInterceptor(new GzipInterceptor())
                         .addInterceptor(new HttpLoggingInterceptor()
                                 .setLevel(Level.BODY))
                                 .build())

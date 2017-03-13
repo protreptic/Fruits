@@ -9,15 +9,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobdev_3.fruits.R;
 import com.example.mobdev_3.fruits.service.fruits.FruitsProvider;
 import com.example.mobdev_3.fruits.service.fruits.model.Fruit;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -99,7 +100,7 @@ public final class FruitFragment extends Fragment {
         };
     }
 
-    private TextView tvFruitId;
+    private ImageView ivFruitImage;
     private TextView tvFruitName;
 
     @Nullable
@@ -108,7 +109,7 @@ public final class FruitFragment extends Fragment {
         final View view = inflater.inflate(R.layout.layout_fruit, container, false);
 
         if (view != null) {
-            tvFruitId = (TextView) view.findViewById(R.id.fruitId);
+            ivFruitImage = (ImageView) view.findViewById(R.id.fruitImage);
             tvFruitName = (TextView) view.findViewById(R.id.fruitName);
         }
 
@@ -136,8 +137,14 @@ public final class FruitFragment extends Fragment {
             fruit = new Fruit(0, "");
         }
 
-        tvFruitId.setText(String.format(Locale.getDefault(), "%d", fruit.getId()));
         tvFruitName.setText(fruit.getName());
+
+        Picasso
+                .with(getActivity())
+                .load(getString(R.string.fruit_service) + "asset/picture/fruit/" + fruit.getId())
+                .resize(64, 64)
+                .centerCrop()
+                .into(ivFruitImage);
     }
 
     private void removeFruit() {

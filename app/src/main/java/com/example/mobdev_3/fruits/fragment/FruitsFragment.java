@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.mobdev_3.fruits.R;
 import com.example.mobdev_3.fruits.service.fruits.FruitsProvider;
 import com.example.mobdev_3.fruits.service.fruits.model.Fruit;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,6 +140,8 @@ public final class FruitsFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getListView().setDivider(null);
+
         if (savedInstanceState == null) {
             setListAdapter(fruitAdapter);
 
@@ -202,7 +206,7 @@ public final class FruitsFragment extends ListFragment {
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_fruit, parent, false);
 
                 final FruitViewHolder newHolder = new FruitViewHolder();
-                newHolder.tvFruitId = (TextView) convertView.findViewById(R.id.fruitId);
+                newHolder.ivFruitImage = (ImageView) convertView.findViewById(R.id.fruitImage);
                 newHolder.tvFruitName = (TextView) convertView.findViewById(R.id.fruitName);
 
                 convertView.setTag(newHolder);
@@ -211,15 +215,21 @@ public final class FruitsFragment extends ListFragment {
             final FruitViewHolder holder = (FruitViewHolder) convertView.getTag();
             final Fruit fruit = getItem(position);
 
-            holder.tvFruitId.setText(String.format(Locale.getDefault(), "%d", fruit.getId()));
             holder.tvFruitName.setText(fruit.getName());
+
+            Picasso
+                    .with(getActivity())
+                    .load(getString(R.string.fruit_service) + "asset/picture/fruit/" + fruit.getId())
+                    .resize(64, 64)
+                    .centerCrop()
+                    .into(holder.ivFruitImage);
 
             return convertView;
         }
 
         class FruitViewHolder {
 
-            TextView tvFruitId;
+            ImageView ivFruitImage;
             TextView tvFruitName;
 
         }

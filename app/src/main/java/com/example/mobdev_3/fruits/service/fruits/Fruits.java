@@ -30,7 +30,4 @@ public interface Fruits {
     @DELETE("fruit/{id}")
     Observable<Response<Void>> removeFruit(@Path("id") int fruitId);
 
-    @POST("fruit/{id}/eat")
-    Observable<Response<Void>> eatFruit(@Path("id") int fruitId);
-
 }

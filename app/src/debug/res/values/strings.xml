@@ -1,3 +1,5 @@
 <resources>
     <string name="fruit_service">https://serene-savannah-28976.herokuapp.com/</string>
+    <!--<string name="fruit_chat_service">ws://192.168.1.102:8002/</string>-->
+    <string name="fruit_chat_service">ws://fruit-chat.herokuapp.com/</string>
 </resources>
