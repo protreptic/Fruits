@@ -1,6 +1,7 @@
 package com.example.mobdev_3.fruits.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.mobdev_3.fruits.R;
@@ -24,4 +25,10 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Snackbar.make(findViewById(R.id.activity_main), "", Snackbar.LENGTH_SHORT).show();
+    }
 }

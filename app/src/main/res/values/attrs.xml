@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HeraldLayout">
+        <attr name="android:maxWidth" />
+        <attr name="elevation" />
+        <attr format="dimension" name="maxActionInlineWidth"/>
+    </declare-styleable>
+</resources>
