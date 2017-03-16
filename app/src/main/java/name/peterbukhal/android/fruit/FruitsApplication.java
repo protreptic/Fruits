@@ -7,9 +7,6 @@ import name.peterbukhal.android.fruit.service.fruits.FruitDownloader;
 import name.peterbukhal.android.fruit.service.fruits.FruitsProvider;
 import com.squareup.picasso.Picasso;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
 public final class FruitsApplication extends Application {
 
     @Override

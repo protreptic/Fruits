@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import io.realm.Realm;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -56,7 +55,7 @@ public final class ChatFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View contentView = inflater.inflate(R.layout.fragment_chat, container, false);
+        final View contentView = inflater.inflate(R.layout.f_chat, container, false);
 
         if (contentView != null) {
             mRvMessages = (RecyclerView) contentView.findViewById(R.id.messages);
@@ -178,14 +177,12 @@ public final class ChatFragment extends Fragment {
         }
     }
 
-    private Realm mRealm;
     private String mUserName;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mRealm = Realm.getDefaultInstance();
         mUserName = UUID.randomUUID().toString().substring(0, 8);
         mRvMessages.setAdapter(mMessagesAdapter);
 
@@ -219,18 +216,6 @@ public final class ChatFragment extends Fragment {
         super.onDestroyView();
 
         disconnectFromChat();
-
-        try {
-            if (mRealm != null) {
-                if (mRealm.isInTransaction()) {
-                    mRealm.cancelTransaction();
-                }
-
-                mRealm.close();
-            }
-        } catch (Exception e) {
-            //
-        }
     }
 
     private class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -177,7 +177,7 @@ public final class FruitsFragment extends ListFragment {
 
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, FruitFragment.newInstance(fruit), FRAGMENT_TAG_FRUIT)
+                .replace(R.id.main_content, FruitFragment.newInstance(fruit), FRAGMENT_TAG_FRUIT)
                 .addToBackStack(FRAGMENT_TAG_FRUIT)
                 .commit();
     }
@@ -202,7 +202,7 @@ public final class FruitsFragment extends ListFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_fruit, parent, false);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.l_fruit, parent, false);
 
                 final FruitViewHolder newHolder = new FruitViewHolder();
                 newHolder.ivFruitImage = (ImageView) convertView.findViewById(R.id.fruitImage);

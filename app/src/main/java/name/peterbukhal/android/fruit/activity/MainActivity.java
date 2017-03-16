@@ -14,12 +14,12 @@ public final class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.a_main);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.activity_main, newInstance(), FRAGMENT_TAG_CHAT)
+                    .replace(R.id.main_content, newInstance(), FRAGMENT_TAG_CHAT)
                     .commit();
         }
     }
