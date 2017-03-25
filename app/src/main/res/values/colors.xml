@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="herald_background_color">#323232</color>
+
+    <color name="ic_tint">#6f6f6f</color>
+    <color name="background_chat">#dfdfdf</color>
 </resources>

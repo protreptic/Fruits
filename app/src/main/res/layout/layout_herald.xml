@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.mobdev_3.fruits.herald.impl.HeraldImpl.HeraldLayout
+<name.peterbukhal.android.fruit.herald.impl.HeraldImpl.HeraldLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Herald"
     android:layout_width="match_parent"
