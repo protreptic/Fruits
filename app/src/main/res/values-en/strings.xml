@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message1001">Loading error</string>
+    <string name="message1002">Fruit removed</string>
+    <string name="message1003">Write a message…</string>
+    <string name="message1004">Nickname can\'t be empty</string>
+    <string name="message1005">Nickname can\'t be lass 3 and more than 80 characters</string>
+
+    <string name="add_fruit">Add fruit</string>
+    <string name="remove_fruit">Remove fruit</string>
+    <string name="account_info">Profile</string>
+    <string name="save">Save</string>
+    <string name="you">You</string>
+</resources>

@@ -318,22 +318,20 @@ public final class ChatFragment extends Fragment {
                     final OutgoingMessageViewHolder outgoingHolder = (OutgoingMessageViewHolder) holder;
 
                     outgoingHolder.tvMessage.setText(message.getMessage());
+                    //outgoingHolder.tvMessage.setMovementMethod(LinkMovementMethod.getInstance());
                     outgoingHolder.tvDate.setText(F.format(new Date(message.getCreatedAt())));
                     outgoingHolder.tvAuthor.setText(R.string.you);
 
                     switch (message.getStatus()) {
                         case 0: {
                             outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_not_sent);
-                        }
-                        break;
+                        } break;
                         case 1: {
                             outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_sent);
-                        }
-                        break;
+                        } break;
                         case 2: {
                             outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_read);
-                        }
-                        break;
+                        } break;
                     }
                 }
                 break;
@@ -347,6 +345,7 @@ public final class ChatFragment extends Fragment {
                             .into(incomingHolder.ivAvatar);
 
                     incomingHolder.tvMessage.setText(message.getMessage());
+                    //incomingHolder.tvMessage.setMovementMethod(LinkMovementMethod.getInstance());
                     incomingHolder.tvDate.setText(F.format(new Date(message.getCreatedAt())));
                     incomingHolder.tvAuthor.setText(message.getAuthor());
                 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message1001">Ошибка загрузки</string>
+    <string name="message1002">Фрукт удален</string>
+    <string name="message1003">Напишите сообщение…</string>
+    <string name="message1004">Nickname не может быть пустым</string>
+    <string name="message1005">Nickname неможет быть меньше 3 и больше 80 символов</string>
+
+    <string name="add_fruit">Добавить фрукт</string>
+    <string name="remove_fruit">Удалить фрукт</string>
+    <string name="account_info">Профиль</string>
+    <string name="save">Сохранить</string>
+    <string name="you">Вы</string>
+</resources>

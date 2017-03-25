@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="tint_gray">#6f6f6f</color>
+    <color name="tint_gray">#afafaf</color>
     <color name="tint_green">#66CC00</color>
     <color name="background_chat">#dfdfdf</color>
 </resources>

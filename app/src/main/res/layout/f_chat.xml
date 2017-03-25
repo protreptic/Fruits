@@ -36,7 +36,7 @@
             android:layout_toEndOf="@+id/addAttachment"
             android:layout_alignTop="@+id/addAttachment"
             android:layout_alignBottom="@+id/addAttachment"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:background="@null"
             android:inputType="text"
             android:maxLines="1"

@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:padding="16dp"
-        android:background="@drawable/bubble_white">
+        android:background="@drawable/message_white">
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/author"
@@ -36,7 +36,8 @@
             android:textColor="@android:color/black"
             android:layout_below="@+id/author"
             android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:autoLink="all" />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/status"
