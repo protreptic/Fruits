@@ -1,26 +1,7 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
-    <style name="Herald" parent="android:Widget">
-        <item name="android:minWidth">@dimen/herald_min_width</item>
-        <item name="android:maxWidth">@dimen/herald_max_width</item>
-        <item name="android:background">@drawable/herald_background</item>
-        <item name="android:paddingLeft">@dimen/herald_padding_horizontal</item>
-        <item name="android:paddingRight">@dimen/herald_padding_horizontal</item>
-        <item name="elevation">@dimen/herald_elevation</item>
-        <item name="maxActionInlineWidth">@dimen/herald_action_inline_max_width</item>
-    </style>
-
-    <dimen name="herald_min_width">-1px</dimen>
-    <dimen name="herald_max_width">-1px</dimen>
-    <dimen name="herald_padding_horizontal">12dp</dimen>
-    <dimen name="herald_elevation">6dp</dimen>
-    <dimen name="herald_action_inline_max_width">128dp</dimen>
 </resources>
