@@ -3,8 +3,8 @@
     <color name="colorPrimary">#001C70</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="herald_background_color">#323232</color>
 
-    <color name="ic_tint">#6f6f6f</color>
+    <color name="tint_gray">#6f6f6f</color>
+    <color name="tint_green">#66CC00</color>
     <color name="background_chat">#dfdfdf</color>
 </resources>

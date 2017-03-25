@@ -1,5 +1,6 @@
 package name.peterbukhal.android.fruit.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,18 +20,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import name.peterbukhal.android.fruit.R;
-import name.peterbukhal.android.fruit.service.chat.model.Message;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
+import name.peterbukhal.android.fruit.R;
+import name.peterbukhal.android.fruit.service.chat.model.Message;
+import name.peterbukhal.android.fruit.widget.CircleTransform;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -47,6 +52,42 @@ public final class ChatFragment extends Fragment {
         fragment.setArguments(arguments);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.m_chat, menu);
+    }
+
+    private void openProfile() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_content,
+                        ProfileFragment.newInstance(),
+                        ProfileFragment.FRAGMENT_TAG_PROFILE)
+                .addToBackStack(ProfileFragment.FRAGMENT_TAG_PROFILE)
+                .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile: {
+                openProfile();
+            }
+            break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private RecyclerView mRvMessages;
@@ -91,7 +132,7 @@ public final class ChatFragment extends Fragment {
     private Gson gson = new GsonBuilder().create();
 
     private Message newMessage(final String message) {
-        return new Message(mUserName, message);
+        return new Message(mNickname, message);
     }
 
     private List<Message> mMessages = new ArrayList<>();
@@ -106,7 +147,7 @@ public final class ChatFragment extends Fragment {
 
                 @Override
                 public void run() {
-                    final Message newMessage = newMessage(mUserName + " присоединился");
+                    final Message newMessage = newMessage(mNickname + " присоединился");
 
                     mChat.send(gson.toJson(newMessage));
 
@@ -123,7 +164,7 @@ public final class ChatFragment extends Fragment {
                 public void run() {
                     final Message msg1 = gson.fromJson(message, Message.class);
 
-                    if (!msg1.getMessage().startsWith(mUserName)) {
+                    if (!msg1.getMessage().startsWith(mNickname)) {
                         addMessage(msg1);
                         confirmMessageRead(msg1);
                     }
@@ -133,7 +174,8 @@ public final class ChatFragment extends Fragment {
         }
 
         @Override
-        public void onClosed(WebSocket webSocket, final int code, final String reason) {}
+        public void onClosed(WebSocket webSocket, final int code, final String reason) {
+        }
 
         @Override
         public void onFailure(WebSocket webSocket, final Throwable t, Response response) {
@@ -157,7 +199,7 @@ public final class ChatFragment extends Fragment {
     }
 
     private void confirmMessageRead(Message message) {
-        if (message.getStatus() < 2 && !message.getAuthor().equals(mUserName)) {
+        if (message.getStatus() < 2 && !message.getAuthor().equals(mNickname)) {
             message.setStatus(2);
             mChat.send(gson.toJson(message));
         }
@@ -177,38 +219,47 @@ public final class ChatFragment extends Fragment {
         }
     }
 
-    private String mUserName;
+    private String mNickname;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mUserName = UUID.randomUUID().toString().substring(0, 8);
         mRvMessages.setAdapter(mMessagesAdapter);
 
-        if (savedInstanceState == null) {
-            connectToChat();
-        }
+        mNickname = getActivity()
+                .getSharedPreferences("profile", Context.MODE_PRIVATE)
+                .getString("profile_nickname", "noname");
+
+        connectToChat();
     }
 
     private void connectToChat() {
-        mChat = new OkHttpClient()
-                .newWebSocket(new Request.Builder()
-                        .url(getString(R.string.fruit_chat_service))
-                        .build(), mChatListener);
+        try {
+            mChat = new OkHttpClient()
+                    .newWebSocket(new Request.Builder()
+                            .url(getString(R.string.fruit_chat_service))
+                            .build(), mChatListener);
+        } catch (Exception e) {
+            //
+        }
     }
 
     private void disconnectFromChat() {
-        mChat.send(gson.toJson(newMessage(mUserName + " вышел")));
+        try {
+            mChat.send(gson.toJson(newMessage(mNickname + " вышел")));
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                mChat.close(1000, "");
-            }
+                @Override
+                public void run() {
+                    mChat.close(1000, "");
+                }
 
-        }, 1500);
+            }, 1500);
+        } catch (Exception e) {
+            //
+        }
     }
 
     @Override
@@ -220,25 +271,35 @@ public final class ChatFragment extends Fragment {
 
     private class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        static final int TYPE_OUTCOMING_MESSAGE = 0;
+        static final int TYPE_OUTGOING_MESSAGE = 0;
         static final int TYPE_INCOMING_MESSAGE = 1;
+        static final int TYPE_SERVICE_MESSAGE = 2;
 
         @Override
         public int getItemViewType(int position) {
-            return (mMessages.get(position).getAuthor().equals(mUserName)) ?
-                    TYPE_OUTCOMING_MESSAGE: TYPE_INCOMING_MESSAGE;
+            if (mMessages.get(position).getMessage().endsWith("присоединился") ||
+                    mMessages.get(position).getMessage().endsWith("вышел")) {
+                return TYPE_SERVICE_MESSAGE;
+            }
+
+            return (mMessages.get(position).getAuthor().equals(mNickname)) ?
+                    TYPE_OUTGOING_MESSAGE : TYPE_INCOMING_MESSAGE;
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
-                case TYPE_OUTCOMING_MESSAGE: {
-                    return new OutcomingMessageViewHolder(from(getActivity())
-                            .inflate(R.layout.l_outcoming_message, parent, false));
+                case TYPE_OUTGOING_MESSAGE: {
+                    return new OutgoingMessageViewHolder(from(getActivity())
+                            .inflate(R.layout.l_message_outgoing, parent, false));
                 }
                 case TYPE_INCOMING_MESSAGE: {
                     return new IncomingMessageViewHolder(from(getActivity())
-                            .inflate(R.layout.l_incoming_message, parent, false));
+                            .inflate(R.layout.l_message_incoming, parent, false));
+                }
+                case TYPE_SERVICE_MESSAGE: {
+                    return new ServiceMessageViewHolder(from(getActivity())
+                            .inflate(R.layout.l_message_service, parent, false));
                 }
                 default: {
                     throw new RuntimeException();
@@ -246,39 +307,58 @@ public final class ChatFragment extends Fragment {
             }
         }
 
-        final SimpleDateFormat F = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        final SimpleDateFormat F = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             final Message message = mMessages.get(position);
 
             switch (holder.getItemViewType()) {
-                case TYPE_OUTCOMING_MESSAGE: {
-                    final OutcomingMessageViewHolder outcomingHolder = (OutcomingMessageViewHolder) holder;
+                case TYPE_OUTGOING_MESSAGE: {
+                    final OutgoingMessageViewHolder outgoingHolder = (OutgoingMessageViewHolder) holder;
 
-                    outcomingHolder.tvMessage.setText(message.getMessage());
-                    outcomingHolder.tvDate.setText(F.format(new Date(message.getCreatedAt())));
-                    outcomingHolder.tvAuthor.setText(R.string.you);
+                    outgoingHolder.tvMessage.setText(message.getMessage());
+                    outgoingHolder.tvDate.setText(F.format(new Date(message.getCreatedAt())));
+                    outgoingHolder.tvAuthor.setText(R.string.you);
 
                     switch (message.getStatus()) {
                         case 0: {
-                            outcomingHolder.tvStatus.setImageResource(0);
-                        } break;
+                            outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_not_sent);
+                        }
+                        break;
                         case 1: {
-                            outcomingHolder.tvStatus.setImageResource(R.drawable.ic_message_sent);
-                        } break;
+                            outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_sent);
+                        }
+                        break;
                         case 2: {
-                            outcomingHolder.tvStatus.setImageResource(R.drawable.ic_message_read);
-                        } break;
+                            outgoingHolder.tvStatus.setImageResource(R.drawable.ic_message_read);
+                        }
+                        break;
                     }
-                } break;
+                }
+                break;
                 case TYPE_INCOMING_MESSAGE: {
                     final IncomingMessageViewHolder incomingHolder = (IncomingMessageViewHolder) holder;
+
+                    Picasso.with(getActivity())
+                            .load("asdasdasdasd"/*getString(R.string.fruit_default_avatar)*/)
+                            .error(R.drawable.ic_profile)
+                            .transform(new CircleTransform())
+                            .into(incomingHolder.ivAvatar);
 
                     incomingHolder.tvMessage.setText(message.getMessage());
                     incomingHolder.tvDate.setText(F.format(new Date(message.getCreatedAt())));
                     incomingHolder.tvAuthor.setText(message.getAuthor());
-                } break;
+                }
+                break;
+                case TYPE_SERVICE_MESSAGE: {
+                    final ServiceMessageViewHolder serviceHolder = (ServiceMessageViewHolder) holder;
+
+                    serviceHolder.tvMessage.setText(
+                            F.format(new Date(message.getCreatedAt())) +
+                                    " " + message.getMessage());
+                }
+                break;
             }
         }
 
@@ -291,6 +371,7 @@ public final class ChatFragment extends Fragment {
 
     private static class IncomingMessageViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView ivAvatar;
         TextView tvAuthor;
         TextView tvDate;
         TextView tvMessage;
@@ -298,6 +379,7 @@ public final class ChatFragment extends Fragment {
         IncomingMessageViewHolder(View itemView) {
             super(itemView);
 
+            ivAvatar = (ImageView) itemView.findViewById(R.id.avatar);
             tvMessage = (TextView) itemView.findViewById(R.id.message);
             tvAuthor = (TextView) itemView.findViewById(R.id.author);
             tvDate = (TextView) itemView.findViewById(R.id.date);
@@ -305,20 +387,32 @@ public final class ChatFragment extends Fragment {
 
     }
 
-    private static class OutcomingMessageViewHolder extends RecyclerView.ViewHolder {
+    private static class OutgoingMessageViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvAuthor;
         TextView tvDate;
         TextView tvMessage;
         ImageView tvStatus;
 
-        OutcomingMessageViewHolder(View itemView) {
+        OutgoingMessageViewHolder(View itemView) {
             super(itemView);
 
             tvMessage = (TextView) itemView.findViewById(R.id.message);
             tvAuthor = (TextView) itemView.findViewById(R.id.author);
             tvDate = (TextView) itemView.findViewById(R.id.date);
             tvStatus = (ImageView) itemView.findViewById(R.id.status);
+        }
+
+    }
+
+    private static class ServiceMessageViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvMessage;
+
+        ServiceMessageViewHolder(View itemView) {
+            super(itemView);
+
+            tvMessage = (TextView) itemView.findViewById(R.id.message);
         }
 
     }

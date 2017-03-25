@@ -19,7 +19,7 @@ public final class Message {
     }
 
     public String getAuthor() {
-        return author.substring(0, 8);
+        return author;
     }
 
     public void setAuthor(String author) {

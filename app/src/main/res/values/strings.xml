@@ -2,12 +2,17 @@
     <string name="app_name">Fruits</string>
     <string name="fruit_service">https://serene-savannah-28976.herokuapp.com/</string>
     <string name="fruit_chat_service">ws://fruit-chat.herokuapp.com/</string>
+    <string name="fruit_default_avatar">https://s.gravatar.com/avatar/9f5a5d5074a10cfe180c43d9ba76f841</string>
     <string name="add_fruit">Добавить фрукт</string>
     <string name="remove_fruit">Удалить фрукт</string>
 
     <string name="message1001">Ошибка загрузки</string>
     <string name="message1002">Фрукт удален</string>
+    <string name="message1003">Write a message…</string>
+
     <string name="you">Вы</string>
-    <string name="settings">Settings</string>
-    <string name="write_a_message">Write a message...</string>
+    <string name="account_info">Профиль</string>
+    <string name="save">Сохранить</string>
+    <string name="message1004">Nickname не может быть пустым</string>
+    <string name="message1005">Nickname неможет быть меньше 3 и больше 80 символов</string>
 </resources>
